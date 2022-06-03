@@ -1,0 +1,522 @@
+
+        SELECT count(*) OVER()::int as count,
+               l.id,
+               l.date as date,
+               l.title,
+               l.status,
+               count(CASE WHEN ls.visit IS TRUE THEN 1 END) as visitCount,
+               json_agg(
+                   json_build_object(
+                       'id', s.id,
+                       'name', s.name,
+                       'visit', ls.visit
+                       )
+                   ) as students,
+            json_agg(
+                   json_build_object(
+                       'id', t.id,
+                       'name', t.name
+                       )
+                   ) as teachers
+        FROM lessons l
+                 LEFT JOIN lesson_teachers lt on l.id = lt.lesson_id
+                 LEFT JOIN teachers t on lt.teacher_id = t.id
+                 LEFT JOIN lesson_students ls on l.id = ls.lesson_id
+                 LEFT JOIN students s on ls.student_id = s.id
+        WHERE l.status = '1'::int
+          AND lt.teacher_id = ANY (array['1','2','3','4','5']::int[])
+          AND CASE
+            WHEN '2019-09-01' IS NOT NULL THEN l.date BETWEEN '2019-01-01' AND '2019-09-01'
+            ELSE '2019-01-01' = l.date END
+        GROUP BY l.id
+        HAVING CASE
+            WHEN '15'::int IS NOT NULL THEN count(ls.student_id) BETWEEN '10'::int AND '15'::int
+            ELSE count(ls.student_id) = '10'::int END
+        LIMIT '10'::int OFFSET 40::int
+      
+##############################
+
+        SELECT count(*) OVER()::int as count,
+               l.id,
+               l.date as date,
+               l.title,
+               l.status,
+               count(CASE WHEN ls.visit IS TRUE THEN 1 END) as visitCount,
+               json_agg(
+                   json_build_object(
+                       'id', s.id,
+                       'name', s.name,
+                       'visit', ls.visit
+                       )
+                   ) as students,
+            json_agg(
+                   json_build_object(
+                       'id', t.id,
+                       'name', t.name
+                       )
+                   ) as teachers
+        FROM lessons l
+                 LEFT JOIN lesson_teachers lt on l.id = lt.lesson_id
+                 LEFT JOIN teachers t on lt.teacher_id = t.id
+                 LEFT JOIN lesson_students ls on l.id = ls.lesson_id
+                 LEFT JOIN students s on ls.student_id = s.id
+        WHERE l.status = '1'::int
+          AND lt.teacher_id = ANY (array['1','2','3','4','5']::int[])
+          AND CASE
+            WHEN '2019-09-01' IS NOT NULL THEN l.date BETWEEN '2019-01-01' AND '2019-09-01'
+            ELSE '2019-01-01' = l.date END
+        GROUP BY l.id
+        HAVING CASE
+            WHEN '15'::int IS NOT NULL THEN count(ls.student_id) BETWEEN '10'::int AND '15'::int
+            ELSE count(ls.student_id) = '10'::int END
+        LIMIT '10'::int OFFSET 0::int
+      
+##############################
+
+        SELECT count(*) OVER()::int as count,
+               l.id,
+               l.date as date,
+               l.title,
+               l.status,
+               count(CASE WHEN ls.visit IS TRUE THEN 1 END) as visitCount,
+               json_agg(
+                   json_build_object(
+                       'id', s.id,
+                       'name', s.name,
+                       'visit', ls.visit
+                       )
+                   ) as students,
+            json_agg(
+                   json_build_object(
+                       'id', t.id,
+                       'name', t.name
+                       )
+                   ) as teachers
+        FROM lessons l
+                 LEFT JOIN lesson_teachers lt on l.id = lt.lesson_id
+                 LEFT JOIN teachers t on lt.teacher_id = t.id
+                 LEFT JOIN lesson_students ls on l.id = ls.lesson_id
+                 LEFT JOIN students s on ls.student_id = s.id
+        WHERE l.status = '1'::int
+          AND lt.teacher_id = ANY (array['1','2','3','4','5']::int[])
+          AND CASE
+            WHEN '2019-09-01' IS NOT NULL THEN l.date BETWEEN '2019-01-01' AND '2019-09-01'
+            ELSE '2019-01-01' = l.date END
+        GROUP BY l.id
+        HAVING CASE
+            WHEN '15'::int IS NOT NULL THEN count(ls.student_id) BETWEEN '5'::int AND '15'::int
+            ELSE count(ls.student_id) = '5'::int END
+        LIMIT '10'::int OFFSET 0::int
+      
+##############################
+
+        INSERT INTO lessons(date, title)
+        SELECT 'Blue Ocean' as title, generate_series as date
+        FROM generate_series('2019-09-10'::date, '2019-12-31'::date,'1 day')
+        WHERE extract(dow from generate_series::date) - 1 = ANY(array[0,1,3,6]::int[])
+        LIMIT null::int
+        RETURNING id
+      
+##############################
+
+        INSERT INTO lessons(date, title)
+        SELECT 'Blue Ocean' as title, generate_series as date
+        FROM generate_series('2019-09-10'::date, '2019-12-31'::date,'1 day')
+        WHERE extract(dow from generate_series::date) - 1 = ANY(array[0,1,3,6]::int[])
+        LIMIT 9::int
+        RETURNING id
+      
+##############################
+
+        INSERT INTO lessons(date, title)
+        SELECT generate_series as date, 'Blue Ocean'::varchar as title 
+        FROM generate_series('2019-09-10'::date, '2019-12-31'::date,'1 day')
+        WHERE extract(dow from generate_series::date) - 1 = ANY(array[0,1,3,6]::int[])
+        LIMIT 9::int
+        RETURNING id
+      
+##############################
+INSERT INTO "lesson_teachers"("lesson_id","teacher_id") VALUES
+##############################
+'{"id":29}',1
+##############################
+'{"id":29}',2
+##############################
+'{"id":30}',1
+##############################
+'{"id":30}',2
+##############################
+'{"id":31}',1
+##############################
+'{"id":31}',2
+##############################
+'{"id":32}',1
+##############################
+'{"id":32}',2
+##############################
+'{"id":33}',1
+##############################
+'{"id":33}',2
+##############################
+'{"id":34}',1
+##############################
+'{"id":34}',2
+##############################
+'{"id":35}',1
+##############################
+'{"id":35}',2
+##############################
+'{"id":36}',1
+##############################
+'{"id":36}',2
+##############################
+'{"id":37}',1
+##############################
+'{"id":37}',2
+##############################
+
+        INSERT INTO lessons(date, title)
+        SELECT generate_series as date, 'Blue Ocean'::varchar as title 
+        FROM generate_series('2019-09-10'::date, '2019-12-31'::date,'1 day')
+        WHERE extract(dow from generate_series::date) - 1 = ANY(array[0,1,3,6]::int[])
+        LIMIT 9::int
+        RETURNING id
+      
+##############################
+INSERT INTO "lesson_teachers"("lesson_id","teacher_id") VALUES
+##############################
+'{"id":38}',1
+##############################
+'{"id":38}',2
+##############################
+'{"id":39}',1
+##############################
+'{"id":39}',2
+##############################
+'{"id":40}',1
+##############################
+'{"id":40}',2
+##############################
+'{"id":41}',1
+##############################
+'{"id":41}',2
+##############################
+'{"id":42}',1
+##############################
+'{"id":42}',2
+##############################
+'{"id":43}',1
+##############################
+'{"id":43}',2
+##############################
+'{"id":44}',1
+##############################
+'{"id":44}',2
+##############################
+'{"id":45}',1
+##############################
+'{"id":45}',2
+##############################
+'{"id":46}',1
+##############################
+'{"id":46}',2
+##############################
+
+        INSERT INTO lessons(date, title)
+        SELECT generate_series as date, 'Blue Ocean'::varchar as title 
+        FROM generate_series('2019-09-10'::date, '2019-12-31'::date,'1 day')
+        WHERE extract(dow from generate_series::date) - 1 = ANY(array[0,1,3,6]::int[])
+        LIMIT 9::int
+        RETURNING id
+      
+##############################
+INSERT INTO "lesson_teachers"("lesson_id","teacher_id") VALUES
+##############################
+'{"id":47}',1
+##############################
+'{"id":47}',2
+##############################
+'{"id":48}',1
+##############################
+'{"id":48}',2
+##############################
+'{"id":49}',1
+##############################
+'{"id":49}',2
+##############################
+'{"id":50}',1
+##############################
+'{"id":50}',2
+##############################
+'{"id":51}',1
+##############################
+'{"id":51}',2
+##############################
+'{"id":52}',1
+##############################
+'{"id":52}',2
+##############################
+'{"id":53}',1
+##############################
+'{"id":53}',2
+##############################
+'{"id":54}',1
+##############################
+'{"id":54}',2
+##############################
+'{"id":55}',1
+##############################
+'{"id":55}',2
+##############################
+
+        INSERT INTO lessons(date, title)
+        SELECT generate_series as date, 'Blue Ocean'::varchar as title 
+        FROM generate_series('2019-09-10'::date, '2019-12-31'::date,'1 day')
+        WHERE extract(dow from generate_series::date) - 1 = ANY(array[0,1,3,6]::int[])
+        LIMIT 9::int
+        RETURNING id
+      
+##############################
+INSERT INTO "lesson_teachers"("lesson_id","teacher_id") VALUES
+##############################
+'{"id":56}',1
+##############################
+'{"id":56}',2
+##############################
+'{"id":57}',1
+##############################
+'{"id":57}',2
+##############################
+'{"id":58}',1
+##############################
+'{"id":58}',2
+##############################
+'{"id":59}',1
+##############################
+'{"id":59}',2
+##############################
+'{"id":60}',1
+##############################
+'{"id":60}',2
+##############################
+'{"id":61}',1
+##############################
+'{"id":61}',2
+##############################
+'{"id":62}',1
+##############################
+'{"id":62}',2
+##############################
+'{"id":63}',1
+##############################
+'{"id":63}',2
+##############################
+'{"id":64}',1
+##############################
+'{"id":64}',2
+##############################
+
+        INSERT INTO lessons(date, title)
+        SELECT generate_series as date, 'Blue Ocean'::varchar as title 
+        FROM generate_series('2019-09-10'::date, '2019-12-31'::date,'1 day')
+        WHERE extract(dow from generate_series::date) - 1 = ANY(array[0,1,3,6]::int[])
+        LIMIT 9::int
+        RETURNING id
+      
+##############################
+INSERT INTO "lesson_teachers"("lesson_id","teacher_id") VALUES
+##############################
+65,1
+##############################
+65,2
+##############################
+66,1
+##############################
+66,2
+##############################
+67,1
+##############################
+67,2
+##############################
+68,1
+##############################
+68,2
+##############################
+69,1
+##############################
+69,2
+##############################
+70,1
+##############################
+70,2
+##############################
+71,1
+##############################
+71,2
+##############################
+72,1
+##############################
+72,2
+##############################
+73,1
+##############################
+73,2
+##############################
+
+        INSERT INTO lessons(date, title)
+        SELECT generate_series as date, 'Blue Ocean'::varchar as title 
+        FROM generate_series('2019-09-10'::date, '2019-12-31'::date,'1 day')
+        WHERE extract(dow from generate_series::date) - 1 = ANY(array[0,1,3,6]::int[])
+        LIMIT 9::int
+        RETURNING id
+      
+##############################
+INSERT INTO "lesson_teachers"("lesson_id","teacher_id") VALUES
+##############################
+74,1
+##############################
+74,2
+##############################
+75,1
+##############################
+75,2
+##############################
+76,1
+##############################
+76,2
+##############################
+77,1
+##############################
+77,2
+##############################
+78,1
+##############################
+78,2
+##############################
+79,1
+##############################
+79,2
+##############################
+80,1
+##############################
+80,2
+##############################
+81,1
+##############################
+81,2
+##############################
+82,1
+##############################
+82,2
+##############################
+
+        SELECT count(*) OVER()::int as count,
+               l.id,
+               l.date as date,
+               l.title,
+               l.status,
+               count(CASE WHEN ls.visit IS TRUE THEN 1 END) as visitCount,
+               json_agg(
+                   json_build_object(
+                       'id', s.id,
+                       'name', s.name,
+                       'visit', ls.visit
+                       )
+                   ) as students,
+            json_agg(
+                   json_build_object(
+                       'id', t.id,
+                       'name', t.name
+                       )
+                   ) as teachers
+        FROM lessons l
+                 LEFT JOIN lesson_teachers lt on l.id = lt.lesson_id
+                 LEFT JOIN teachers t on lt.teacher_id = t.id
+                 LEFT JOIN lesson_students ls on l.id = ls.lesson_id
+                 LEFT JOIN students s on ls.student_id = s.id
+        WHERE l.status = '1'::int
+          AND lt.teacher_id = ANY (array['1','2','3','4','5']::int[])
+          AND CASE
+            WHEN '2019-09-01' IS NOT NULL THEN l.date BETWEEN '2019-01-01' AND '2019-09-01'
+            ELSE '2019-01-01' = l.date END
+        GROUP BY l.id
+        HAVING CASE
+            WHEN '15'::int IS NOT NULL THEN count(ls.student_id) BETWEEN '5'::int AND '15'::int
+            ELSE count(ls.student_id) = '5'::int END
+        LIMIT '10'::int OFFSET 0::int
+      
+##############################
+
+        SELECT count(*) OVER()::int as count,
+               l.id,
+               l.date as date,
+               l.title,
+               l.status,
+               count(CASE WHEN ls.visit IS TRUE THEN 1 END) as visitCount,
+               json_agg(
+                   json_build_object(
+                       'id', s.id,
+                       'name', s.name,
+                       'visit', ls.visit
+                       )
+                   ) as students,
+            json_agg(
+                   json_build_object(
+                       'id', t.id,
+                       'name', t.name
+                       )
+                   ) as teachers
+        FROM lessons l
+                 LEFT JOIN lesson_teachers lt on l.id = lt.lesson_id
+                 LEFT JOIN teachers t on lt.teacher_id = t.id
+                 LEFT JOIN lesson_students ls on l.id = ls.lesson_id
+                 LEFT JOIN students s on ls.student_id = s.id
+        WHERE l.status = '1'::int
+          AND lt.teacher_id = ANY (array['1','2','3','4','5']::int[])
+          AND CASE
+            WHEN '2019-09-01' IS NOT NULL THEN l.date BETWEEN '2019-01-01' AND '2019-09-01'
+            ELSE '2019-01-01' = l.date END
+        GROUP BY l.id
+        HAVING CASE
+            WHEN '15'::int IS NOT NULL THEN count(ls.student_id) BETWEEN '5'::int AND '15'::int
+            ELSE count(ls.student_id) = '5'::int END
+        LIMIT '10'::int OFFSET 0::int
+      
+##############################
+
+        SELECT count(*) OVER()::int as count,
+               l.id,
+               l.date as date,
+               l.title,
+               l.status,
+               count(CASE WHEN ls.visit IS TRUE THEN 1 END) as visitCount,
+               json_agg(
+                   json_build_object(
+                       'id', s.id,
+                       'name', s.name,
+                       'visit', ls.visit
+                       )
+                   ) as students,
+            json_agg(
+                   json_build_object(
+                       'id', t.id,
+                       'name', t.name
+                       )
+                   ) as teachers
+        FROM lessons l
+                 LEFT JOIN lesson_teachers lt on l.id = lt.lesson_id
+                 LEFT JOIN teachers t on lt.teacher_id = t.id
+                 LEFT JOIN lesson_students ls on l.id = ls.lesson_id
+                 LEFT JOIN students s on ls.student_id = s.id
+        WHERE l.status = '1'::int
+          AND lt.teacher_id = ANY (array['1','2','3','4','5']::int[])
+          AND CASE
+            WHEN '2019-09-01' IS NOT NULL THEN l.date BETWEEN '2019-01-01' AND '2019-09-01'
+            ELSE '2019-01-01' = l.date END
+        GROUP BY l.id
+        HAVING CASE
+            WHEN '15'::int IS NOT NULL THEN count(ls.student_id) BETWEEN '5'::int AND '15'::int
+            ELSE count(ls.student_id) = '5'::int END
+        LIMIT '10'::int OFFSET 0::int
+      
+##############################
