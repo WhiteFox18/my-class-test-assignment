@@ -13,6 +13,9 @@ router
       query("date").custom((value) => {
         let array = value.split(",");
 
+        if(array.length === 1 && moment(array[0], "YYYY-MM-DD", true).isValid())
+          return true
+
         if (
           array.length > 3 ||
           !moment(array[0], "YYYY-MM-DD", true).isValid() ||
@@ -26,6 +29,9 @@ router
         .custom((value) => value.split(",").every((element: string) => Number.isInteger(Number(element)))),
       query("studentsCount").isString().custom((value) => {
         let array = value.split(",");
+
+        if(array.length === 1 && Number.isInteger(Number(array[0])))
+          return true
 
         if (array.length > 3 || !Number.isInteger(Number(array[0])) || !Number.isInteger(Number(array[1])))
           return false;
